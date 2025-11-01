@@ -18,13 +18,17 @@ class Background extends StatelessWidget {
             'assets/images/deco_top.png',
             height: 150,
             fit: BoxFit.cover,
+            width: double.infinity,
           ),
-          const Expanded(child: SizedBox.shrink()),
+          Expanded(
+            child: child,
+          ),
           // Bottom
           Image.asset(
             'assets/images/deco_bottom.png',
             height: 150,
             fit: BoxFit.cover,
+            width: double.infinity,
           ),
         ],
       ),
