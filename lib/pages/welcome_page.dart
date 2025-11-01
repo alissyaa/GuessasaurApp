@@ -10,19 +10,22 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Background(
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.12,
-            vertical: MediaQuery.of(context).size.height * 0.05,
+            horizontal: screenWidth * 0.12,
+            vertical: screenHeight * 0.05,
           ),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.12),
+                SizedBox(height: screenHeight * 0.12),
                 Text(
                   'Welcome to',
                   style: AppColors.gradientTextStyle(
@@ -38,7 +41,7 @@ class WelcomePage extends StatelessWidget {
                     fontFamily: 'Jolly',
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                SizedBox(height: screenHeight * 0.02),
                 const Text(
                   'Think you know your dinosaurs? Let\'s find out!',
                   textAlign: TextAlign.left,
@@ -50,7 +53,7 @@ class WelcomePage extends StatelessWidget {
                     color: AppColors.text,
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                SizedBox(height: screenHeight * 0.1),
                 PrimaryButton(
                   text: 'Im ready!',
                   onPressed: () {
