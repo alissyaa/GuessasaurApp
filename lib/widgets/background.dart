@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
+import 'package:guessasaur/constants/app_colors.dart';
 
 class Background extends StatelessWidget {
   final Widget child;
@@ -10,7 +10,24 @@ class Background extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: AppColors.secondary,
-      child: child,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+        children: <Widget>[
+          // Top
+          Image.asset(
+            'assets/images/deco_top.png',
+            height: 150,
+            fit: BoxFit.cover,
+          ),
+          const Expanded(child: SizedBox.shrink()),
+          // Bottom
+          Image.asset(
+            'assets/images/deco_bottom.png',
+            height: 150,
+            fit: BoxFit.cover,
+          ),
+        ],
+      ),
     );
   }
 }
