@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:guessasaur/pages/splash_screen.dart';
+import 'package:guessasaur/routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,13 +10,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: createRouter(),
       title: 'Guessasaur',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Inter',
       ),
-      home: const SplashScreen(),
     );
   }
 }
