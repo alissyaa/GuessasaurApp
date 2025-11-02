@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:guessasaur/constants/app_colors.dart';
+import 'package:guessasaur/routes.dart';
 import 'package:guessasaur/widgets/background.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,10 +35,7 @@ class _FormPageState extends State<FormPage> {
       body: Background(
         child: Center(
           child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(
-              horizontal: screenWidth * 0.12,
-              vertical: screenHeight * 0.05,
-            ),
+            padding: const EdgeInsets.all(24.0),
             child: Container(
               width: screenWidth * 0.85,
               padding: const EdgeInsets.all(32.0),
@@ -62,7 +60,7 @@ class _FormPageState extends State<FormPage> {
                     'Who\'s there?',
                     style: TextStyle(
                       fontFamily: 'Jolly',
-                      fontSize: 60,
+                      fontSize: 40,
                       color: AppColors.secondary,
                       height: 1.2,
                     ),
@@ -72,12 +70,12 @@ class _FormPageState extends State<FormPage> {
                     'Enter your name',
                     style: TextStyle(
                       fontFamily: 'Inter',
-                      fontSize: 22,
+                      fontSize: 16,
                       color: AppColors.secondary,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 8),
                   Row(
                     children: [
                       Expanded(
@@ -90,8 +88,9 @@ class _FormPageState extends State<FormPage> {
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: AppColors.secondary,
+                            hintText: 'Aysaurus',
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(15),
                               borderSide: BorderSide.none,
                             ),
                             contentPadding: const EdgeInsets.symmetric(
@@ -104,15 +103,16 @@ class _FormPageState extends State<FormPage> {
                       const SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: () async {
-                          if (_nameController.text.isNotEmpty) {
-                            await _saveName(_nameController.text);
-                            // TODO: Navigate to the next page
-                          } else {
-                            // Optional: Show an error message
+                          if (_nameController.text.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Please enter your name!')),
                             );
+                            return;
                           }
+
+                          await _saveName(_nameController.text);
+                          if (!mounted) return;
+                          context.go(AppRoutes.quiz);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.secondary,

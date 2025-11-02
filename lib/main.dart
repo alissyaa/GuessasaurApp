@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:guessasaur/providers/quiz_provider.dart';
 import 'package:guessasaur/routes.dart';
 
 void main() {
@@ -10,12 +12,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: createRouter(),
-      title: 'Guessasaur',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Inter',
+    return ChangeNotifierProvider(
+      create: (_) => QuizProvider(),
+      child: MaterialApp.router(
+        routerConfig: createRouter(),
+        title: 'Guessasaur',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: 'Inter',
+        ),
       ),
     );
   }
