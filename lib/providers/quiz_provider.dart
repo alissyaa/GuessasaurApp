@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:guessasaur/data/dummy_data.dart';
 import 'package:guessasaur/models/question_model.dart';
 
 class QuizProvider with ChangeNotifier {
@@ -7,23 +8,10 @@ class QuizProvider with ChangeNotifier {
   Map<int, int> _answers = {};
   bool _showFeedback = false;
   bool _lastAnswerCorrect = false;
+  bool _isQuizCompleted = false;
 
   QuizProvider() {
-    _questions = [
-      Question(
-        text: 'Who\'s this dinosaur?',
-        imagePath: 'assets/images/velociraptor.png',
-        options: ['Stegosaurus', 'Velociraptor', 'T-Rex', 'Triceratops'],
-        correctAnswerIndex: 1,
-      ),
-      Question(
-        text: 'Who\'s this dinosaur?',
-        imagePath: 'assets/images/allosaurus.png',
-        options: ['Velociraptor', 'T-Rex', 'Triceratops', 'Allosaurus'],
-        correctAnswerIndex: 3,
-      ),
-      // Add more questions here
-    ];
+    _questions = dummyQuestions;
   }
 
   List<Question> get questions => _questions;
@@ -32,6 +20,17 @@ class QuizProvider with ChangeNotifier {
   Map<int, int> get answers => _answers;
   bool get showFeedback => _showFeedback;
   bool get lastAnswerCorrect => _lastAnswerCorrect;
+  bool get isQuizCompleted => _isQuizCompleted;
+
+  int get score {
+    int correctAnswers = 0;
+    _answers.forEach((questionIndex, answerIndex) {
+      if (_questions[questionIndex].correctAnswerIndex == answerIndex) {
+        correctAnswers++;
+      }
+    });
+    return correctAnswers;
+  }
 
   void answerQuestion(int questionIndex, int answerIndex) {
     _answers[questionIndex] = answerIndex;
@@ -45,8 +44,17 @@ class QuizProvider with ChangeNotifier {
     if (_currentQuestionIndex < _questions.length - 1) {
       _currentQuestionIndex++;
     } else {
-      // TODO: Handle quiz completion
+      _isQuizCompleted = true;
     }
+    notifyListeners();
+  }
+
+  void resetQuiz() {
+    _currentQuestionIndex = 0;
+    _answers = {};
+    _showFeedback = false;
+    _lastAnswerCorrect = false;
+    _isQuizCompleted = false;
     notifyListeners();
   }
 }
