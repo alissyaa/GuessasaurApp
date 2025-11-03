@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:guessasaur/providers/quiz_provider.dart';
 import 'package:guessasaur/widgets/background.dart';
@@ -15,6 +18,13 @@ class QuizPage extends StatelessWidget {
       body: Background(
         child: Consumer<QuizProvider>(
           builder: (context, quizProvider, child) {
+            if (quizProvider.isQuizCompleted) {
+              // Use a post-frame callback to navigate after the build is complete
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                context.go('/result');
+              });
+            }
+
             final question = quizProvider.currentQuestion;
             return Stack(
               alignment: Alignment.center,
@@ -35,15 +45,12 @@ class QuizPage extends StatelessWidget {
                         final option = entry.value;
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 16.0),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: OptionWidget(
-                              text: option,
-                              isSelected: quizProvider.answers[quizProvider.currentQuestionIndex] == index,
-                              isCorrect: quizProvider.currentQuestion.correctAnswerIndex == index,
-                              showFeedback: quizProvider.showFeedback,
-                              onTap: () => quizProvider.answerQuestion(quizProvider.currentQuestionIndex, index),
-                            ),
+                          child: OptionWidget(
+                            text: option,
+                            isSelected: quizProvider.answers[quizProvider.currentQuestionIndex] == index,
+                            isCorrect: quizProvider.currentQuestion.correctAnswerIndex == index,
+                            showFeedback: quizProvider.showFeedback,
+                            onTap: () => quizProvider.answerQuestion(quizProvider.currentQuestionIndex, index),
                           ),
                         );
                       }).toList(),
@@ -51,14 +58,10 @@ class QuizPage extends StatelessWidget {
                   ),
                 ),
                 if (quizProvider.showFeedback)
-                  ClipRect(
-                      child: Container(
-                        child: Center(
-                          child: FeedbackCard(
-                            isCorrect: quizProvider.lastAnswerCorrect,
-                            onNext: () => quizProvider.nextQuestion(),
-                          ),
-                        ),
+                  Center(
+                    child: FeedbackCard(
+                      isCorrect: quizProvider.lastAnswerCorrect,
+                      onNext: () => quizProvider.nextQuestion(),
                     ),
                   ),
               ],

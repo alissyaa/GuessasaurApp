@@ -29,7 +29,8 @@ class QuizProvider with ChangeNotifier {
         correctAnswers++;
       }
     });
-    return correctAnswers;
+    if (_questions.isEmpty) return 0;
+    return ((correctAnswers / _questions.length) * 100).round();
   }
 
   void answerQuestion(int questionIndex, int answerIndex) {

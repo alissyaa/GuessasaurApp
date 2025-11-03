@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:guessasaur/pages/form_page.dart';
 import 'package:guessasaur/pages/quiz_page.dart';
+import 'package:guessasaur/pages/result_page.dart';
 import 'package:guessasaur/pages/splash_screen.dart';
 import 'package:guessasaur/pages/welcome_page.dart';
 
@@ -10,6 +11,7 @@ class AppRoutes {
   static const String welcome = '/welcome';
   static const String form = '/form';
   static const String quiz = '/quiz';
+  static const String result = '/result';
 }
 
 GoRouter createRouter() {
@@ -42,6 +44,13 @@ GoRouter createRouter() {
         name: 'quiz',
         builder: (BuildContext context, GoRouterState state) {
           return const QuizPage();
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.result,
+        name: 'result',
+        builder: (BuildContext context, GoRouterState state) {
+          return const ResultPage();
         },
       ),
     ],

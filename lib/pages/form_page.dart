@@ -88,7 +88,7 @@ class _FormPageState extends State<FormPage> {
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: AppColors.secondary,
-                            hintText: 'Aysaurus',
+                            hintText: 'your name',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
                               borderSide: BorderSide.none,
