@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:guessasaur/constants/app_colors.dart';
-import 'package:guessasaur/widgets/button.dart';
 
 class FeedbackCard extends StatelessWidget {
   final bool isCorrect;
@@ -12,6 +11,8 @@ class FeedbackCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color contentColor = isCorrect ? AppColors.primary : AppColors.red;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 40.0),
       decoration: BoxDecoration(
@@ -38,42 +39,67 @@ class FeedbackCard extends StatelessWidget {
                 width: 2,
               ),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (isCorrect)
-                  Image.asset(
-                    'assets/images/true_dino.png',
-                    height: 100,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (isCorrect)
+                    Image.asset(
+                      'assets/images/true_dino.png',
+                      height: 100,
+                    ),
+                  if (!isCorrect)
+                    Image.asset(
+                      'assets/images/false_dino.png',
+                      height: 100,
+                    ),
+                  const SizedBox(height: 16),
+                  Text(
+                    isCorrect ? 'Rawr-some!' : 'Oh no!',
+                    style: TextStyle(
+                      fontFamily: 'Jolly',
+                      fontSize: 60,
+                      color: contentColor,
+                    ),
                   ),
-                if (!isCorrect)
-                  Image.asset(
-                    'assets/images/false_dino.png',
-                    height: 100,
+                  const SizedBox(height: 8),
+                  Text(
+                    isCorrect ? 'You guessed it right!' : 'Not that one!',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 25,
+                      fontWeight: FontWeight.w700,
+                      color: contentColor,
+                    ),
                   ),
-                Text(
-                  isCorrect ? 'Rawr-some!' : 'Oh no!',
-                  style: const TextStyle(
-                    fontFamily: 'Jolly',
-                    fontSize: 60,
-                    color: AppColors.primary,
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: onNext,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: contentColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Next Dino',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Icon(Icons.play_arrow, color: Colors.white),
+                      ],
+                    ),
                   ),
-                ),
-                Text(
-                  isCorrect ? 'You guessed it right!' : 'Not that one!',
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 25,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primary,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                PrimaryButton(
-                  text: 'Next Dino',
-                  onPressed: onNext,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
