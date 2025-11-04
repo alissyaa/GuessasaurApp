@@ -6,6 +6,7 @@ import 'package:guessasaur/constants/app_colors.dart';
 import 'package:guessasaur/providers/quiz_provider.dart';
 import 'package:guessasaur/widgets/background.dart';
 import 'package:guessasaur/widgets/button.dart';
+import 'package:guessasaur/widgets/score.dart';
 
 class ResultPage extends StatefulWidget {
   const ResultPage({super.key});
@@ -36,82 +37,37 @@ class _ResultPageState extends State<ResultPage> {
 
     return Scaffold(
       body: Background(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(40.0),
-            child: Column(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final bool isWide = constraints.maxWidth > 900;
+
+            final textContent = Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment:
+              isWide ? CrossAxisAlignment.start : CrossAxisAlignment.center,
               children: [
                 Text(
                   'RAWRRR',
-                  style: AppColors.gradientTextStyle(
-                    fontSize: 70,
+                  style: TextStyle(
                     fontFamily: 'Jolly',
+                    fontSize: isWide ? 80 : 70,
+                    color: AppColors.primary,
                   ),
                 ),
                 Text(
                   'Good job $_playerName,',
-                  style: AppColors.gradientTextStyle(
-                    fontSize: 55,
-                    fontFamily: 'Jolly',
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  'Your Final Score',
                   style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Jolly',
+                    fontSize: isWide ? 60 : 50,
                     color: AppColors.primary,
                   ),
                 ),
                 const SizedBox(height: 20),
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      width: 250,
-                      height: 160,
-                      decoration: const BoxDecoration(
-                        color: AppColors.primary,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    Positioned(
-                      top: 0,
-                      left: 20,
-                      child: Container(
-                        width: 50, height: 50,
-                        decoration: const BoxDecoration(
-                          color: AppColors.primary, shape: BoxShape.circle,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 0,
-                      right: 20,
-                      child: Container(
-                        width: 50, height: 50,
-                        decoration: const BoxDecoration(
-                          color: AppColors.primary, shape: BoxShape.circle,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      '${quizProvider.score}',
-                      style: TextStyle(
-                        fontFamily: 'Jolly',
-                        fontSize: 80,
-                        color: AppColors.secondary,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
+                if (!isWide)
+                  ScoreCircleWidget(score: quizProvider.score),
+                if (!isWide) const SizedBox(height: 25),
                 const Text(
-                  'You\'re now officially a',
+                  'You\'re a',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 20,
@@ -120,24 +76,47 @@ class _ResultPageState extends State<ResultPage> {
                   ),
                 ),
                 Text(
-                  'Dino Expert',
+                  quizProvider.resultLevel,
                   style: AppColors.gradientTextStyle(
-                    fontSize: 20,
                     fontFamily: 'Inter',
+                    fontSize: 23,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 25),
                 PrimaryButton(
                   text: 'Try Again?',
+                  color: AppColors.primary,
                   onPressed: () {
                     quizProvider.resetQuiz();
                     context.go('/form');
                   },
                 ),
               ],
-            ),
-          ),
+            );
+
+            return Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 60),
+                child: isWide
+                    ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: ScoreCircleWidget(score: quizProvider.score),
+                      ),
+                    ),
+                    const SizedBox(width: 60),
+                    Expanded(flex: 1, child: textContent),
+                  ],
+                )
+                    : textContent,
+              ),
+            );
+          },
         ),
       ),
     );

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:guessasaur/constants/app_colors.dart';
-import 'package:guessasaur/routes.dart';
+import 'package:guessasaur/config/routes.dart';
 import 'package:guessasaur/widgets/background.dart';
+import 'package:guessasaur/widgets/responsive_center.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FormPage extends StatefulWidget {
@@ -28,107 +29,129 @@ class _FormPageState extends State<FormPage> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+    final size = MediaQuery.of(context).size;
+    final textScale = MediaQuery.textScaleFactorOf(context);
 
     return Scaffold(
       body: Background(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24.0),
-            child: Container(
-              width: screenWidth * 0.85,
-              padding: const EdgeInsets.all(32.0),
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'wait...',
-                    style: TextStyle(
-                      fontFamily: 'Jolly',
-                      fontSize: 40,
-                      color: AppColors.secondary,
-                      height: 1.0,
-                    ),
-                  ),
-                  const Text(
-                    'Who\'s there?',
-                    style: TextStyle(
-                      fontFamily: 'Jolly',
-                      fontSize: 40,
-                      color: AppColors.secondary,
-                      height: 1.2,
-                    ),
-                  ),
-                  SizedBox(height: screenHeight * 0.05),
-                  const Text(
-                    'Enter your name',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 16,
-                      color: AppColors.secondary,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _nameController,
-                          style: const TextStyle(
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.bold,
-                          ),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: AppColors.secondary,
-                            hintText: 'your name',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: BorderSide.none,
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 16,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        onPressed: () async {
-                          if (_nameController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Please enter your name!')),
-                            );
-                            return;
-                          }
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: ResponsiveCenter(
+              maxWidth: 500,
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(32),
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final isSmallScreen = constraints.maxWidth < 400;
 
-                          await _saveName(_nameController.text);
-                          if (!mounted) return;
-                          context.go(AppRoutes.quiz);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.secondary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'wait...',
+                          style: TextStyle(
+                            fontFamily: 'Jolly',
+                            fontSize: isSmallScreen ? 40 * textScale : 52 * textScale,
+                            color: AppColors.secondary,
+                            height: 1.0,
                           ),
-                          padding: const EdgeInsets.all(16),
                         ),
-                        child: const Icon(
-                          Icons.play_arrow,
-                          color: AppColors.primary,
+                        Text(
+                          'Who\'s there?',
+                          style: TextStyle(
+                            fontFamily: 'Jolly',
+                            fontSize: isSmallScreen ? 60 * textScale : 80 * textScale,
+                            color: AppColors.secondary,
+                            height: 1.2,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        const SizedBox(height: 40),
+                        Text(
+                          'Enter your name',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 16 * textScale,
+                            color: AppColors.secondary,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: _nameController,
+                                style: const TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primary,
+                                ),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: AppColors.secondary,
+                                  hintText: 'your name',
+                                  hintStyle: const TextStyle(color: AppColors.primary),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 12,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            SizedBox(
+                              height: 52,
+                              child: AspectRatio(
+                                aspectRatio: 1,
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    if (_nameController.text.isEmpty) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('Please enter your name!'),
+                                        ),
+                                      );
+                                      return;
+                                    }
+
+                                    await _saveName(_nameController.text);
+                                    if (!mounted) return;
+                                    context.go(AppRoutes.quiz);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.secondary,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    padding: EdgeInsets.zero,
+                                    elevation: 0,
+                                  ),
+                                  child: const Icon(
+                                    Icons.play_arrow,
+                                    color: AppColors.primary,
+                                    size: 28,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
             ),
           ),

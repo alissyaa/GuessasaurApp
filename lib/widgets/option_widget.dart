@@ -24,16 +24,16 @@ class OptionWidget extends StatelessWidget {
 
     if (showFeedback) {
       if (isCorrect) {
-        buttonColor = AppColors.right; // Green for correct
+        buttonColor = AppColors.right;
       } else if (isSelected) {
-        buttonColor = AppColors.wrong; // Red for selected but wrong
+        buttonColor = AppColors.wrong;
       }
     } else if (isSelected) {
       buttonColor = AppColors.secondary;
     }
 
     return GestureDetector(
-      onTap: showFeedback ? () {} : onTap, // Disable tap when showing feedback
+      onTap: showFeedback ? () {} : onTap,
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 20),

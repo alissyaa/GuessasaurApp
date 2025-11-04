@@ -12,6 +12,12 @@ class ResponsiveCenter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    if (screenWidth > 900) {
+      return Center(child: child);
+    }
+
     return Center(
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: maxWidth),

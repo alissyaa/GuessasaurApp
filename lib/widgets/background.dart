@@ -15,7 +15,6 @@ class Background extends StatelessWidget {
         children: [
           Center(child: child),
 
-          // Zigzag atas
           const Positioned(
             top: 0,
             left: 0,
@@ -23,7 +22,6 @@ class Background extends StatelessWidget {
             child: ZigZagDecoration(isTop: true),
           ),
 
-          // Zigzag bawah
           const Positioned(
             bottom: 0,
             left: 0,
@@ -36,9 +34,6 @@ class Background extends StatelessWidget {
   }
 }
 
-// =============================
-// ZigZagDecoration
-// =============================
 class ZigZagDecoration extends StatelessWidget {
   final bool isTop;
   final Color? topColor;
@@ -79,17 +74,15 @@ class ZigZagPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint()..style = PaintingStyle.fill;
 
-    // Warna dasar (krem)
     paint.color = bottomColor;
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), paint);
 
-    // Warna zigzag (hijau)
     paint.color = topColor;
     final path = Path();
 
     const triangleWidth = 70.0;
     const triangleHeight = 70.0;
-    const radius = 8.0; // untuk efek rounded
+    const radius = 8.0;
 
     if (isTop) {
       path.moveTo(0, 0);

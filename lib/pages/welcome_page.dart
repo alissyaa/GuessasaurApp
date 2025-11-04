@@ -54,6 +54,7 @@ class WelcomePage extends StatelessWidget {
                     SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                     PrimaryButton(
                       text: 'Im ready!',
+                      color: AppColors.primary,
                       onPressed: () {
                         context.go('/form');
                       },

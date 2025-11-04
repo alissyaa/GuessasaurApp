@@ -4,15 +4,16 @@ import 'package:guessasaur/constants/app_colors.dart';
 class PrimaryButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
+  final Color? color;
 
-  const PrimaryButton({super.key, required this.text, required this.onPressed});
+  const PrimaryButton({super.key, required this.text, required this.onPressed, required this.color,});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary,
+        backgroundColor: color ?? AppColors.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
